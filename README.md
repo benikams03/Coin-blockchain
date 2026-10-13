@@ -1,4 +1,4 @@
-# KamsCoin Blockchain
+# Coin Blockchain
 
 **Projet académique de cryptomonnaie et de paiement sur blockchain Ethereum.**
 
