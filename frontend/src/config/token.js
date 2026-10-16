@@ -1,9 +1,9 @@
 // ⚙️ Configuration de TA cryptomonnaie et de la boutique.
 // Change ici le nom / symbole, tout le site se met à jour.
 export const TOKEN = {
-  name: 'ShopCoin',
-  symbol: 'SHC',
-  decimals: 18,
+  name: 'DANI',
+  symbol: 'DANI',
+  decimals: 3,
   // TODO (vrai MetaMask) : adresse du smart contract ERC-20 de ta monnaie
   contractAddress: '0x0000000000000000000000000000000000000000',
 };
