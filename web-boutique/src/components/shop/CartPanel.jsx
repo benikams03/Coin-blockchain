@@ -6,7 +6,7 @@ import { formatAmount } from '../../lib/format.js';
 const iconBtn =
   'grid h-9 w-9 cursor-pointer place-items-center rounded-md border border-slate-300 bg-white text-slate-700 transition-colors duration-200 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-40';
 
-export default function CartPanel({ onValidate }) {
+export default function CartPanel({ onValidate, walletAddress }) {
   const { items, total, addItem, decrementItem, removeItem } = useCart();
 
   return (
@@ -61,10 +61,15 @@ export default function CartPanel({ onValidate }) {
           <span>Total</span>
           <span>{formatAmount(total)}</span>
         </div>
+        {!walletAddress && items.length > 0 && (
+          <p className="mt-3 text-xs text-amber-700">
+            Connectez votre wallet pour valider l'achat
+          </p>
+        )}
         <button
           type="button"
           onClick={onValidate}
-          disabled={items.length === 0}
+          disabled={items.length === 0 || !walletAddress}
           className="mt-4 min-h-[48px] w-full cursor-pointer rounded-lg bg-brand-600 text-sm font-semibold text-white transition-colors duration-200 hover:bg-brand-700 disabled:cursor-not-allowed disabled:bg-slate-300"
         >
           Valider l'achat
