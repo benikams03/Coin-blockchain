@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { getProducts } from '../services/productService.js';
 import { useCart } from '../context/CartContext.jsx';
 import { useTransactions } from '../context/TransactionsContext.jsx';
+import { useWallet } from '../context/WalletContext.jsx';
 import ProductRow from '../components/shop/ProductRow.jsx';
 import CartPanel from '../components/shop/CartPanel.jsx';
 import PaymentModal from '../components/payment/PaymentModal.jsx';
@@ -13,6 +14,7 @@ export default function ShopPage() {
   const [order, setOrder] = useState(null); // copie du panier au moment de valider
   const { items, total, addItem, clear } = useCart();
   const { addTransaction } = useTransactions();
+  const { address } = useWallet();
 
   useEffect(() => {
     getProducts()
@@ -63,7 +65,7 @@ export default function ShopPage() {
         </section>
 
         <aside className="border-t border-slate-200 bg-slate-50 p-5 sm:p-8 lg:border-l lg:border-t-0">
-          <CartPanel onValidate={() => setOrder({ items, total })} />
+          <CartPanel onValidate={() => setOrder({ items, total })} walletAddress={address} />
         </aside>
       </div>
 

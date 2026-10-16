@@ -1,14 +1,22 @@
 import { createContext, useContext, useState } from 'react';
-import { connectWallet, getMockAddress } from '../services/walletService.js';
+import { connectWallet } from '../services/walletService.js';
 
 const WalletContext = createContext(null);
 
 export function WalletProvider({ children }) {
-  // Mock : on démarre "connecté". Avec le vrai MetaMask, démarre à null
-  // et appelle connect() depuis un bouton.
-  const [address, setAddress] = useState(getMockAddress());
+  // Avec le vrai MetaMask, on démarre déconnecté (null)
+  // L'utilisateur doit cliquer sur "Connecter MetaMask" pour se connecter
+  const [address, setAddress] = useState(null);
 
-  const connect = async () => setAddress(await connectWallet());
+  const connect = async () => {
+    try {
+      const walletAddress = await connectWallet();
+      setAddress(walletAddress);
+    } catch (error) {
+      console.error('Erreur de connexion du wallet:', error);
+      throw error;
+    }
+  };
 
   return <WalletContext.Provider value={{ address, connect }}>{children}</WalletContext.Provider>;
 }

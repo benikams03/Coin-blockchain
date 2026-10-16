@@ -4,8 +4,8 @@ export const TOKEN = {
   name: 'DANI',
   symbol: 'DANI',
   decimals: 3,
-  // TODO (vrai MetaMask) : adresse du smart contract ERC-20 de ta monnaie
-  contractAddress: '0x0000000000000000000000000000000000000000',
+  // Adresse du smart contract ERC-20 DaniellaCoin
+  contractAddress: '0xdE848f33a134CAE9E841737A26891C31B3Fa9606',
 };
 
 export const STORE = {

@@ -1,12 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { CheckCircle2, XCircle, Loader2, X, Wallet } from 'lucide-react';
-import FakeMetaMask from './FakeMetaMask.jsx';
 import { sendPayment } from '../../services/paymentService.js';
 import { useWallet } from '../../context/WalletContext.jsx';
 import { formatAmount, shortAddress } from '../../lib/format.js';
 
-// Étapes : review → metamask → processing → success | rejected
+// Étapes : review → processing → success | rejected
 export default function PaymentModal({ order, onClose, onSuccess }) {
   const { address } = useWallet();
   const [step, setStep] = useState('review');
@@ -67,17 +66,9 @@ export default function PaymentModal({ order, onClose, onSuccess }) {
             </p>
             <div className="mt-5 grid grid-cols-2 gap-3">
               <button type="button" onClick={onClose} className="min-h-[46px] cursor-pointer rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-100">Annuler</button>
-              <button type="button" onClick={() => setStep('metamask')} className="min-h-[46px] cursor-pointer rounded-lg bg-brand-600 text-sm font-semibold text-white hover:bg-brand-700">Payer avec MetaMask</button>
+              <button type="button" onClick={handleConfirm} className="min-h-[46px] cursor-pointer rounded-lg bg-brand-600 text-sm font-semibold text-white hover:bg-brand-700">Payer avec MetaMask</button>
             </div>
           </>
-        )}
-
-        {step === 'metamask' && (
-          <div className="mt-4">
-            <p className="mb-3 text-sm text-slate-600">En attente de votre validation dans MetaMask…</p>
-            {/* 🧪 Avec le vrai MetaMask : supprime ce bloc et appelle handleConfirm() directement au clic sur "Payer avec MetaMask". */}
-            <FakeMetaMask total={order.total} buyer={address} onConfirm={handleConfirm} onReject={() => { setError('Transaction rejetée dans MetaMask.'); setStep('rejected'); }} />
-          </div>
         )}
 
         {step === 'processing' && (
@@ -91,8 +82,25 @@ export default function PaymentModal({ order, onClose, onSuccess }) {
           <div className="py-4 text-center" role="status">
             <CheckCircle2 className="mx-auto h-14 w-14 text-green-600" aria-hidden="true" />
             <p className="mt-3 text-base font-semibold text-slate-900">Paiement effectué avec succès !</p>
-            <p className="mt-1 text-sm text-slate-600">{formatAmount(tx.total)} envoyés à la boutique.</p>
-            <p className="mt-3 break-all rounded-lg bg-slate-100 p-2 font-mono text-xs text-slate-700">{tx.hash}</p>
+            <p className="mt-1 text-sm text-slate-600">{formatAmount(tx.total)} payés</p>
+
+            <div className="mt-4 rounded-lg bg-slate-50 p-4 text-left">
+              <p className="mb-2 text-xs font-semibold text-slate-700 uppercase">Produits achetés</p>
+              <ul className="space-y-1 text-sm">
+                {tx.items.map((item) => (
+                  <li key={item.productId} className="flex justify-between text-slate-600">
+                    <span>{item.qty} × {item.name}</span>
+                    <span className="font-medium">{formatAmount(item.price * item.qty)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="mt-4">
+              <p className="mb-1 text-xs font-semibold text-slate-700 uppercase">Transaction blockchain</p>
+              <p className="break-all rounded-lg bg-slate-100 p-2 font-mono text-xs text-slate-700">{tx.hash}</p>
+            </div>
+
             <div className="mt-5 grid grid-cols-2 gap-3">
               <button type="button" onClick={onClose} className="min-h-[46px] cursor-pointer rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-100">Continuer</button>
               <Link to="/dashboard" onClick={onClose} className="grid min-h-[46px] place-items-center rounded-lg bg-brand-600 text-sm font-semibold text-white hover:bg-brand-700">Voir le dashboard</Link>
