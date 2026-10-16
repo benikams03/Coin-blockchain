@@ -40,9 +40,7 @@ Le projet utilise une blockchain locale pour simuler les transactions et compren
 ## Architecture
 
 - `contracts/` : smart contracts Solidity.
-- `scripts/` : scripts de déploiement et de distribution des tokens.
-- `test/` : tests des smart contracts.
-- `frontend/` : interface utilisateur React.
+- `web-boutique/` : interface utilisateur React pour notre bouttique.
 
 
 <!-- 
