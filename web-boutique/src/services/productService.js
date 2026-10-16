@@ -1,5 +1,4 @@
 import { getProductContract } from '../config/web3.js';
-import { getProductMetadata } from '../config/productMetadata.js';
 import { TOKEN } from '../config/token.js';
 import { ethers } from 'ethers';
 
@@ -49,16 +48,14 @@ export async function getProducts() {
       const priceInToken = Number(ethers.formatUnits(price, TOKEN.decimals));
       console.log(`💰 Prix converti: ${priceInToken} ${TOKEN.symbol}`);
 
-      // Récupérer les métadonnées (nom, description, icône)
-      const metadata = getProductMetadata(productId);
-
+      // Utiliser des valeurs par défaut basées sur les données du contrat
       products.push({
         id: productId,
-        name: metadata.name,
-        description: metadata.description,
+        name: `Produit #${productId}`,
+        description: '',
         price: priceInToken,
         stock: stock,
-        icon: metadata.icon
+        icon: 'package'
       });
     }
 
