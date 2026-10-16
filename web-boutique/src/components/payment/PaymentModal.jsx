@@ -101,9 +101,8 @@ export default function PaymentModal({ order, onClose, onSuccess }) {
               <p className="break-all rounded-lg bg-slate-100 p-2 font-mono text-xs text-slate-700">{tx.hash}</p>
             </div>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="mt-5 grid grid-cols-1 gap-3">
               <button type="button" onClick={onClose} className="min-h-[46px] cursor-pointer rounded-lg border border-slate-300 text-sm font-medium text-slate-700 hover:bg-slate-100">Continuer</button>
-              <Link to="/dashboard" onClick={onClose} className="grid min-h-[46px] place-items-center rounded-lg bg-brand-600 text-sm font-semibold text-white hover:bg-brand-700">Voir le dashboard</Link>
             </div>
           </div>
         )}

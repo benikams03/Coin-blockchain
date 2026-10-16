@@ -1,5 +1,5 @@
 import { NavLink, Link } from 'react-router-dom';
-import { ShoppingBag, LayoutDashboard, Store, Wallet, LogIn } from 'lucide-react';
+import { ShoppingBag, Store, Wallet, LogIn } from 'lucide-react';
 import { STORE } from '../../config/token.js';
 import { useWallet } from '../../context/WalletContext.jsx';
 import { useCart } from '../../context/CartContext.jsx';
@@ -42,10 +42,6 @@ export default function Navbar() {
                 {count}
               </span>
             )}
-          </NavLink>
-          <NavLink to="/dashboard" className={linkClass}>
-            <LayoutDashboard className="h-4 w-4" aria-hidden="true" />
-            Dashboard
           </NavLink>
         </nav>
 

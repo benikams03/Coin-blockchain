@@ -32,7 +32,7 @@ export default function ShopPage() {
   const closeModal = useCallback(() => setOrder(null), []);
 
   const handleSuccess = (tx) => {
-    addTransaction(tx); // apparaît dans le dashboard
+    addTransaction(tx); // stocke la transaction
     clear(); // vide le panier
   };
 
