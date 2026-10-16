@@ -25,11 +25,11 @@ Le projet utilise une blockchain locale pour simuler les transactions et compren
 - **MetaMask** — gestion du portefeuille et signature des transactions.
 <!-- - **Hardhat** — compilation, déploiement et tests. -->
 - **React + Vite** — interface web.
-<!-- - **Ethers.js** — interaction avec la blockchain. -->
+**Ethers.js** — interaction avec la blockchain.
 
 ## Fonctionnalités prévues
 
-- Création et émission initiale du token KamsCoin (KMS).
+- Création et émission initiale du token.
 - Consultation du solde du portefeuille.
 - Transfert de tokens.
 - Affichage des produits disponibles.
