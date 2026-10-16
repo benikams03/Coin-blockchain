@@ -1,46 +1,114 @@
 # Coin Blockchain
 
-**Projet académique de cryptomonnaie et de paiement sur blockchain Ethereum.**
+**Projet académique de création d'une cryptomonnaie et d'un système de paiement sur la blockchain Ethereum.**
 
 ## Présentation
 
-Coin Blockchain est un projet réalisé dans le cadre du cours de cryptomonnaie et de blockchain. Il consiste à créer un token ERC-20 et à développer une boutique permettant aux utilisateurs d'effectuer des achats avec cette cryptomonnaie.
+Coin Blockchain est un projet réalisé dans le cadre du cours de cryptomonnaie et de blockchain. Il consiste à créer une cryptomonnaie sous forme de token ERC-20 et à développer une boutique permettant aux utilisateurs d'effectuer des achats avec ce token.
 
-Le projet utilise une blockchain locale pour simuler les transactions et comprendre le fonctionnement des paiements décentralisés.
+Le projet utilise une blockchain locale pour simuler les transactions, tester les smart contracts et comprendre le fonctionnement des paiements décentralisés.
 
 ## Objectifs
 
-- Créer une cryptomonnaie basée sur le standard ERC-20.
+- Créer une cryptomonnaie compatible avec le standard ERC-20.
+- Émettre des tokens et attribuer l'offre initiale au créateur du contrat.
 - Effectuer des transferts de tokens entre utilisateurs.
 - Connecter un portefeuille MetaMask.
-- Développer un smart contract pour les achats.
-- Permettre le paiement de produits avec notre token.
-- Vérifier et tester les transactions sur une blockchain locale.
+- Développer un smart contract de gestion des produits et des achats.
+- Permettre le paiement des produits avec notre cryptomonnaie.
+- Enregistrer les achats et les transferts sur la blockchain.
+- Tester les transactions sur une blockchain locale.
 
 ## Technologies utilisées
 
-- **Solidity** — développement des smart contracts.
-- **Ethereum / EVM** — environnement d'exécution des contrats.
-- **Ganache** — blockchain locale de test.
-- **MetaMask** — gestion du portefeuille et signature des transactions.
-<!-- - **Hardhat** — compilation, déploiement et tests. -->
-- **React + Vite** — interface web.
-**Ethers.js** — interaction avec la blockchain.
+- **Solidity** — langage utilisé pour développer les smart contracts.
+- **Ethereum / EVM** — environnement d'exécution des smart contracts.
+- **OpenZeppelin Contracts** — bibliothèque de contrats intelligents réutilisables et éprouvés, notamment pour l'implémentation du standard ERC-20.
+- **Ganache** — blockchain locale utilisée pour simuler le réseau Ethereum et tester les transactions.
+- **MetaMask** — portefeuille permettant de gérer les comptes et de signer les transactions.
+- **React + Vite** — développement de l'interface web de la boutique.
+- **Ethers.js** — bibliothèque JavaScript permettant à l'interface React d'interagir avec la blockchain et les smart contracts.
 
-## Fonctionnalités prévues
+## Pourquoi avons-nous choisi OpenZeppelin ?
 
-- Création et émission initiale du token.
+Nous avons utilisé **OpenZeppelin Contracts** pour implémenter notre cryptomonnaie `DaniellaCoin`.
+
+OpenZeppelin est une bibliothèque open source qui fournit des implémentations standardisées de contrats intelligents. Elle permet aux développeurs de réutiliser des composants existants plutôt que de réécrire toutes les fonctionnalités manuellement.
+
+### Utilisation dans notre projet
+
+Nous utilisons notamment le contrat `ERC20` d'OpenZeppelin pour fournir les fonctionnalités essentielles de notre token :
+
+- `transfer()` : transférer des tokens vers un autre compte.
+- `balanceOf()` : consulter le solde d'une adresse.
+- `totalSupply()` : connaître la quantité totale de tokens émis.
+- `approve()` : autoriser un autre contrat à utiliser une quantité déterminée de tokens.
+- `transferFrom()` : permettre à un contrat autorisé de transférer les tokens d'un utilisateur.
+
+### Pourquoi ce choix ?
+
+1. **Respect du standard ERC-20** : le token est compatible avec les mécanismes courants utilisés par les applications Ethereum.
+2. **Sécurité** : nous nous appuyons sur une implémentation largement utilisée et examinée par la communauté, au lieu de réécrire nous-mêmes toute la logique du token.
+3. **Gain de temps** : nous pouvons nous concentrer sur les fonctionnalités propres à notre projet, notamment la boutique et le paiement.
+4. **Interopérabilité** : les fonctions `approve()` et `transferFrom()` permettent à notre contrat de boutique de prélever les paiements en tokens avec l'autorisation du client.
+
+L'utilisation d'OpenZeppelin réduit certains risques liés à une implémentation personnalisée, mais ne garantit pas à elle seule la sécurité de l'ensemble du projet.
+
+## Fonctionnalités
+
+- Création du token `DaniellaCoin` (symbole : `DANI`).
+- Émission initiale de 1 000 000 DANI.
+- Utilisation de 3 décimales pour le token.
 - Consultation du solde du portefeuille.
-- Transfert de tokens.
-- Affichage des produits disponibles.
-- Achat de produits avec KMS.
+- Transfert de tokens entre utilisateurs.
+- Connexion de MetaMask à l'application.
+- Ajout et configuration des produits dans le smart contract de la boutique.
+- Consultation de la liste des produits disponibles.
+- Gestion des prix, du stock et de l'état de disponibilité.
+- Achat de produits avec DANI.
 - Enregistrement des achats sur la blockchain.
-- Affichage du statut des transactions.
+- Consultation du statut des transactions.
 
-## Architecture
+## Fonctionnement du paiement
 
-- `contracts/` : smart contracts Solidity.
-- `web-boutique/` : interface utilisateur React pour notre bouttique.
+Le processus d'achat se déroule comme suit :
+
+1. Le client connecte son portefeuille MetaMask à la boutique.
+2. Il sélectionne les produits et les quantités souhaités.
+3. L'application calcule le montant total en DANI.
+4. Le client autorise la boutique à prélever le montant nécessaire via `approve()`.
+5. Le client confirme l'achat en appelant `acheterPanier()`.
+6. Le smart contract vérifie le stock, le prix et l'autorisation de paiement.
+7. Le paiement est transféré à l'adresse de trésorerie.
+8. Le stock est mis à jour et l'achat est enregistré sur la blockchain.
+
+Avec 3 décimales, 1 DANI correspond à 1 000 unités minimales. Par exemple, un produit vendu à 10 DANI utilise une valeur de 10 000 unités dans le smart contract.
+
+## Architecture du projet
+
+```text
+Coin-Blockchain/
+├── contracts/
+│   ├── DaniellaCoin.sol
+│   └── DaniellaBoutique.sol
+├── web-boutique/
+│   └── Interface React + Vite
+└── README.md
+```
+
+- `contracts/` : contient les smart contracts Solidity de la cryptomonnaie et de la boutique.
+- `web-boutique/` : contient l'interface React permettant de consulter les produits et d'interagir avec les contrats.
+- `README.md` : présente le projet, ses technologies et son fonctionnement.
+
+## Environnement de test
+
+Le projet utilise Ganache pour exécuter les smart contracts sur une blockchain locale. MetaMask est connecté à ce réseau afin de permettre aux utilisateurs de signer les transactions et de tester les paiements.
+
+Les tokens et les transactions utilisés sur cet environnement sont destinés aux tests académiques et ne représentent pas une cryptomonnaie disposant nécessairement d'une valeur monétaire réelle.
+
+## Contexte académique
+
+Ce projet a pour objectif de mettre en pratique les notions de cryptomonnaie, de smart contracts, de standard ERC-20, de gestion des portefeuilles et de paiements sur une blockchain compatible avec Ethereum.
 
 
 <!-- 
